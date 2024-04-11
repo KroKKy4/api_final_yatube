@@ -1,11 +1,13 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
+from .consts import MAX_LENGTH
+
 User = get_user_model()
 
 
 class Group(models.Model):
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=MAX_LENGTH)
     slug = models.SlugField(unique=True)
     description = models.TextField()
 
@@ -25,8 +27,8 @@ class Post(models.Model):
         upload_to='posts/', null=True, blank=True
     )
     group = models.ForeignKey(
-        Group, on_delete=models.CASCADE,
-        related_name="posts", blank=True, null=True
+        Group, on_delete=models.SET_NULL,
+        related_name='posts', blank=True, null=True
     )
 
     def __str__(self):
